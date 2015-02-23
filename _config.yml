@@ -2,11 +2,13 @@
 title: Porcelain Games Blog
 email: porcelaingames@gmail.com
 description: >
-  Porcelain Games is a small indie team dedicated to making elegant,
-  high-quality games. Check out our debut game, <a href='http://play-impulse.com'>Impulse</a>
+  Porcelain Games is a small Boston-based duo that loves solving puzzles, breaking pots,
+  and, of course, making games. Check out our debut game,
+  <a href='http://play-impulse.com'>Impulse</a>
 host: "http://play-impulse.com"
 baseurl: "/blog" # the base hostname & protocol for your site
-twitter_username: markazhang
+twitter_username_mark: markazhang
+twitter_username_nichole: burtonnichole 
 
 # Build settings
 markdown: kramdown
