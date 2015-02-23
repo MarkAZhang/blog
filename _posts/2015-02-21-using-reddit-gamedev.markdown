@@ -16,7 +16,7 @@ I confess that up to this point, I'd been working on [Impulse](http://play-impul
 
 Here's the description I posted in the thread:
 
-<img src="{{ site.base_url }}/assets/img/impulse_gamedev_desc.png"/>
+<img src="{{ site.baseurl }}/assets/img/impulse_gamedev_desc.png"/>
 
 Some thoughts about writing a good description:
 
@@ -26,7 +26,7 @@ Some thoughts about writing a good description:
 
 Heres an example of a description I found to be clean and effective:
 
-<img src="{{ site.base_url }}/assets/img/pixelia_gamedev_desc.png"/>
+<img src="{{ site.baseurl }}/assets/img/pixelia_gamedev_desc.png"/>
 
 Listing key features is an efficient way to give player a rundown of your game. The contact links on the bottom add legitimacy. I'll definitely be modeling my post after this one in the future.
 
