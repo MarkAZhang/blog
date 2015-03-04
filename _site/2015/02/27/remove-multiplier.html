@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Porcelain Games is a small Boston-based duo that loves solving puzzles, breaking pots, and, of course, making games. Check out our debut game, <a href='http://play-impulse.com'>Impulse</a>
-">
+  <title>How a Score Multiplier can Ruin Your Game</title>
+  <meta name="description" content="Lately, I’ve noticed a worrying trend: new players of Impulse have been throwing their hands up in frustration within the first few levels. Turns out the sco...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="/about/">
+  <link rel="canonical" href="/2015/02/27/remove-multiplier.html">
   <link rel="alternate" type="application/rss+xml" title="Porcelain Games Blog" href="/feed.xml" />
 </head>
 
@@ -58,15 +57,59 @@
         <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title">How a Score Multiplier can Ruin Your Game</h1>
+    <p class="post-meta">Feb 27, 2015 • Mark Zhang</p>
   </header>
 
   <article class="post-content">
-    <p>Welcome to the blog of small indie team Porcelain Games.</p>
+    <p>Lately, I’ve noticed a worrying trend: new players of <a href="http://play-impulse.com">Impulse</a> have been throwing their hands up in frustration within the first few levels. Turns out the score multiplier was to blame.</p>
 
-<p>We are currently in the process of play-testing, polishing, and getting the word out about our debut game, <a href="http://play-impulse.com">Impulse</a>.</p>
+<p>I loved DDR as a kid. In particular, I loved getting full-comboes. It’s a sweet, sweet feeling to face down a 300BPM song, get pushed to your physical limit…and not make a single mistake. When I added Impulse’s score multiplier, I wanted it to feel like that.</p>
 
-<p>We’ll be updating this blog regularly with our thoughts on game design, marketing, and the indie game journey.</p>
+<div class="post-image-container">
+  <img src="/assets/img/ddr_full_combo.png" />
+
+  <div class="image-caption"><i>Awwwwwww yeahhhhhh</i></div>
+</div>
+
+<p>In Impulse, your multiplier increases whenever you kill an enemy, and resets whenever an enemy hits you. The goal is to reach a score threshold before the level gets so hard that it overwhelms you.</p>
+
+<p>The only way to die in Impulse is to get knocked into the Void. By penalizing the player for sloppy play, the score multiplier  makes the game that much more intense and adds another dimension of skill. Every moment, every little action, matters. Repeatedly losing your multiplier is a slow but sure death.</p>
+
+<p>I liked where this was going, so I went ahead and added the score multiplier. It felt AWESOME. Whenever I beat a hard level untouched, I felt like a badass.</p>
+
+<div class="post-image-container">
+  <img src="/assets/img/multiplier.png" />
+  <div class="image-caption"><i>Keeping a high multiplier is key to beating harder levels.</i></div>
+</div>
+
+<p>But all was not well. New players were quickly giving up on my game. It took me a while to realize that the score multiplier was responsible.</p>
+
+<p>The gist was this: new players didn’t care about the multiplier. They were still learning the ropes, and didn’t have the mechanics down to get a high multiplier anyways. The multiplier was complicating the initial experience without any real benefit.</p>
+
+<p>There was an even deeper problem.</p>
+
+<p>I didn’t want levels to be beatable in 10 seconds, and since the multiplier could quickly send scores soaring, there was a high lower bound on the score thresholds. However, new players couldn’t keep any reasonable multiplier, so levels ended up being unreasonably long. After playing minute-long levels and dying repeatedly, players just gave up.</p>
+
+<div class="post-image-container">
+  <img src="/assets/img/early_death.png" />
+  <div class="image-caption"><i> Impulse expects you to die a lot. Minute-long levels are unbearable.</i></div>
+</div>
+
+<p>I ended up removing the multiplier for easy-mode, and introducing it as a new mechanic in hard-mode. This had several benefits:</p>
+
+<ul>
+  <li>There is less to learn at the beginning of the game.</li>
+  <li>The early levels feel shorter and their length can be carefully controlled.</li>
+  <li>There is now an additional mechanic to distinguish hard-mode from easy-mode. Hard-mode uses the same level layouts as easy-mode, and I want the modes to feel distinct.</li>
+</ul>
+
+<p>Removing the multiplier has made a huge difference. Players are getting much further into the game, and they’re much more excited and engaged.</p>
+
+<p>Lesson learned: A score multiplier can be a great way to add intensity and an extra dimension of skill to your game, but it can also damage the experience for newer players. </p>
+
+<p>Hope this was helpful for other game developers who are trying to make challenging <a href="https://www.youtube.com/watch?v=ea6UuRTjkKs">but not punishing</a> games.</p>
+
 
   </article>
 
