@@ -5,6 +5,8 @@ date: 2015-03-04 00:17:32
 author: Mark Zhang
 ---
 
+*Photos by John Chow*
+
 When I ran across the Playcrafting Boston Expo online, it almost seemed too good to be true. Unlike certain [other expos](http://indiemegabooth.com/about/submissions/), which can cost thousands of dollars, this one was completely free for presenters.
 
 Only one problem: it was a week away. I hurriedly wrote an e-mail to the organizer, and he got back to me the next day.
