@@ -5,9 +5,13 @@ date: 2015-03-04 00:17:32
 author: Mark Zhang
 ---
 
-Unlike expos like PAX, which can cost thousands of dollars for a small booth, the Playcrafting Boston Winter Expo was free for presenters. When I ran across it online, it almost seemed too good to be true. The only problem was, it was in a week. I hurriedly wrote an e-mail to the organizer and he got back to me the next day. By a stroke of luck, I was in.
+When I ran across the Playcrafting Boston Expo online, it almost seemed too good to be true. Unlike certain [other expos](http://indiemegabooth.com/about/submissions/), which can cost thousands of dollars, this one was completely free for presenters.
 
-I was pumped to show off [Impulse](http://play-impulse.com). But we had only a week to prepare, and I had never exhibited a game before.
+Only one problem: it was a week away. I hurriedly wrote an e-mail to the organizer, and he got back to me the next day.
+
+By a stroke of luck, I was in.
+
+I was pumped to show off [Impulse](http://play-impulse.com). But we had only a few days to prepare, and I had never exhibited a game before.
 
 <div class="post-image-container">
   <img src="{{ site.baseurl }}/assets/img/pexpo5.jpg" width="500"/>
