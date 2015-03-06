@@ -1,6 +1,12 @@
 /**
  * Site header
  */
+
+ hr {
+  margin-bottom: 30px;
+  margin-top: 20px;
+ }
+
 .site-header {
     border-top: 5px solid $grey-color-dark;
     border-bottom: 1px solid $grey-color-light;
@@ -223,6 +229,7 @@
 
 .post-image-container {
   margin: 50px 20px;
+  text-align: center;
   .image-caption {
     margin-top: 30px;
     text-align: center;

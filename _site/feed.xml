@@ -6,9 +6,86 @@
 </description>
     <link>/blog/</link>
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 04 Mar 2015 01:49:54 -0500</pubDate>
-    <lastBuildDate>Wed, 04 Mar 2015 01:49:54 -0500</lastBuildDate>
+    <pubDate>Thu, 05 Mar 2015 23:25:47 -0500</pubDate>
+    <lastBuildDate>Thu, 05 Mar 2015 23:25:47 -0500</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>The Story of our First Expo</title>
+        <description>&lt;p&gt;Unlike expos like PAX, which can cost thousands of dollars for a small booth, the Playcrafting Boston Winter Expo was free for presenters. When I ran across it online, it almost seemed too good to be true. The only problem was, it was in a week. I hurriedly wrote an e-mail to the organizer and he got back to me the next day. By a stroke of luck, I was in.&lt;/p&gt;
+
+&lt;p&gt;I was pumped to show off &lt;a href=&quot;http://play-impulse.com&quot;&gt;Impulse&lt;/a&gt;. But we had only a week to prepare, and I had never exhibited a game before.&lt;/p&gt;
+
+&lt;div class=&quot;post-image-container&quot;&gt;
+  &lt;img src=&quot;/blog/assets/img/pexpo5.jpg&quot; width=&quot;500&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After the initial excitement wore off, I started reading &lt;a href=&quot;http://www.gamasutra.com/view/feature/4421/indie_exhibitor_lessons_learned_.php?print=1&quot;&gt;articles&lt;/a&gt; and figuring about what I wanted to get out of the expo. Here are the goals I came up with:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Verify that people were excited about Impulse&lt;/strong&gt; - I needed to validate my concept before devoting more time to it.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Playtest&lt;/strong&gt; - this is probably the single most important thing you can get out of an expo. We made sure to nail down what questions we wanted answers, and prepared a short survey.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Build some buzz around Impulse&lt;/strong&gt; - we spent quite a bit of time on marketing materials.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Talk to members of the press&lt;/strong&gt; - I e-mailed the organizer beforehand to see if I could get a press list.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Meet other developers&lt;/strong&gt; - You can get valuable tips by chatting with fellow developers. Plus, they’re cool people!&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Get practice pitching my game&lt;/strong&gt; - being able to quickly sell your game is very important. Attending a small, relatively relaxed expo was excellent practice.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;post-image-container&quot;&gt;
+  &lt;img src=&quot;/blog/assets/img/pexpo1.jpg&quot; width=&quot;500&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We only had a few days to get our marketing materials together, and we were starting from scratch. We wanted something memorable, and we toyed around with ideas like stickers and running a high score contest. In the end, Nichole nailed it with a slick pamphlet that folded out into a poster.&lt;/p&gt;
+
+&lt;div class=&quot;post-image-container&quot; style=&quot;width:40%; display: inline-block;&quot;&gt;
+  &lt;img src=&quot;/blog/assets/img/poster1.jpg&quot; width=&quot;250&quot; /&gt;
+&lt;/div&gt;
+&lt;div class=&quot;post-image-container&quot; style=&quot;width:40%; display: inline-block;&quot;&gt;
+  &lt;img src=&quot;/blog/assets/img/poster2.jpg&quot; width=&quot;250&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We also printed out a 48 x 12 banner which we hung on the tablecloth. Overall, our expenses came out to almost $200. Printing ain’t cheap.&lt;/p&gt;
+
+&lt;div class=&quot;post-image-container&quot;&gt;
+  &lt;img src=&quot;/blog/assets/img/pexpo3.jpg&quot; width=&quot;500&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For our booth we kept the layout simple with two demo stations on opposite ends of the table. We also had a monitor that mirrored one of the demos, allowing spectators to watch people play Impulse. When people weren’t playing, we would loop our &lt;a href=&quot;https://www.youtube.com/watch?v=ZkQeRA8H__E&quot;&gt;game trailer&lt;/a&gt; on the monitor.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;When the big day came, I was nervous but excited. I arrived an hour early so that I would have time to set up and meet other developers before the event began (like &lt;a href=&quot;https://twitter.com/MarkefusDesolus&quot;&gt;this guy&lt;/a&gt;). This also allowed me to snag a booth in a prime location. &lt;/p&gt;
+
+&lt;p&gt;When the attendees started coming in, the hours flew by. Happily, my booth was never empty, and at one point I even attracted a small crowd. Everyone was very friendly and kind, and the evening was wonderful. I met several game music composers from Berklee and learned that a successful Kickstarter is a great way to get your game Greenlit by Steam.&lt;/p&gt;
+
+&lt;div class=&quot;post-image-container&quot;&gt;
+  &lt;img src=&quot;/blog/assets/img/pexpo4.jpg&quot; width=&quot;500&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here are some other things we learned:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;People are generally willing to give out their e-mails. I was surprised by how easy it was. Have a sign-up sheet ready.&lt;/li&gt;
+  &lt;li&gt;A lot of people will pause at your booth and look. If you don’t engage them, many of them will walk away. Prepare something to say to them beforehand. It can be as simple as ‘Hey there, do you want to try out a demo of Impulse?’&lt;/li&gt;
+  &lt;li&gt;People were very diligent about filling out our play-testing surveys. It was a very valuable source of feedback.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;post-image-container&quot;&gt;
+  &lt;img src=&quot;/blog/assets/img/pexpo2.jpg&quot; width=&quot;500&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Overall, the response was very positive. Most of our players got very engaged, and a couple of people even said they were ready to buy the game!&lt;/p&gt;
+
+&lt;p&gt;Attending the expo gave us a huge motivation boost by letting us know that people were excited. We also got a ton of great feedback on our tutorial and initial difficulty curve.&lt;/p&gt;
+
+&lt;p&gt;Thanks to Playcrafting for an awesome event. Impulse’s next appearance will be at Boston University’s &lt;em&gt;Day of the Devs&lt;/em&gt;. If you’re in the Boston area, hope to catch you there!&lt;/p&gt;
+</description>
+        <pubDate>Tue, 03 Mar 2015 19:17:32 -0500</pubDate>
+        <link>/blog/2015/03/03/playcrafting-expo.html</link>
+        <guid isPermaLink="true">/blog/2015/03/03/playcrafting-expo.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>How a Score Multiplier can Ruin Your Game</title>

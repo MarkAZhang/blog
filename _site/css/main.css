@@ -142,6 +142,10 @@ pre {
 /**
  * Site header
  */
+hr {
+  margin-bottom: 30px;
+  margin-top: 20px; }
+
 .site-header {
   border-top: 5px solid #424242;
   border-bottom: 1px solid #e8e8e8;
@@ -299,7 +303,8 @@ pre {
     font-size: 24px; }
 
 .post-image-container {
-  margin: 50px 20px; }
+  margin: 50px 20px;
+  text-align: center; }
   .post-image-container .image-caption {
     margin-top: 30px;
     text-align: center; }
