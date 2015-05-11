@@ -6,9 +6,101 @@
 </description>
     <link>/blog/</link>
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Mar 2015 23:46:37 -0500</pubDate>
-    <lastBuildDate>Thu, 05 Mar 2015 23:46:37 -0500</lastBuildDate>
+    <pubDate>Mon, 11 May 2015 01:02:22 -0400</pubDate>
+    <lastBuildDate>Mon, 11 May 2015 01:02:22 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Impulse Code Quality Post-Mortem</title>
+        <description>&lt;p&gt;Code refactoring is about the least exciting thing you can do for two months when you’re trying to launch a game. &lt;em&gt;Ain’t nobody got time for that, amirite?&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;But Impulse’s three-year-old code base, which has gone through multiple design iterations, was seriously starting to offend my sensibilities.&lt;/p&gt;
+
+&lt;p&gt;Thus, I spent the majority of March and April paying down my technical debt. I’ll go into what I did and what I learned.&lt;/p&gt;
+
+&lt;h3 id=&quot;brief-background&quot;&gt;Brief Background&lt;/h3&gt;
+
+&lt;p&gt;Impulse is a tough-as-nails top-down shooter crafted for hardcore players and written entirely in HTML5. Impulse is available online &lt;a href=&quot;http://play-impulse.com&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I work on Impulse in my off-time with one other friend. I am employed full-time as a front-end web developer.&lt;/p&gt;
+
+&lt;h3 id=&quot;cleaning-up-the-code-base&quot;&gt;Cleaning up the code base&lt;/h3&gt;
+
+&lt;p&gt;Here’s what was wrong:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Dead code everywhere&lt;/strong&gt; - I have a bad habit of commenting out code instead of deleting it (even though I use version control!) if I’m not 100% sure about cutting a feature. 90% of the time I don’t look back and the commented code is left there.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Confusing, multi-purpose modules&lt;/strong&gt; - I have this class called MainGameSummaryState. Originally, it just showed end-of-level stats. But then I made it handle the UI when the player saved-and-quit the game. At the time, it was the easy thing to do, and besides, the two UIs were similar and both occurred when the player left the level. But the end result was a mess. There were multiple paths into MainGameSummaryState, each of which had to be configured with various flags. The internals were a tangle of if-statements.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Poorly organized code&lt;/strong&gt; - Let’s just leave it at that.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Overall, I found myself asking ‘where does this happen in the code?’ and ‘what the hell does this even do?’ too many times. Surprisingly side-effects were also common. The time spent re-tracing through code and tracking down obscure bugs was substantial.&lt;/p&gt;
+
+&lt;p&gt;Here’s what I did to fix it:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Removed all the dead code&lt;/strong&gt; - It’s still all preserved in version control. I tried to remove the code in steps and be descriptive with my commit messages so I could easily find deleted code in the future.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Carefully split up my modules&lt;/strong&gt; - My rule of thumb was that every module should do exactly one thing. If two modules share code, factor it out into a common library or common class. I made sure I could succinctly describe what was in each utility library (and I had many). I went from about 40 files to 110, but it felt much more manageable due to the organization.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Organize related code into classes&lt;/strong&gt; - For example, I created a class to hold the gameplay data and defined an API for game-states to modify it. As a result, all the logic for processing the gameplay data was in one place instead of scattered across game-states. In doing this, I discovered many ways to simplify the code and cut down on redundancies.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;a-quick-word-on-game-engines&quot;&gt;A quick word on game engines&lt;/h3&gt;
+
+&lt;p&gt;I really regret not using a game engine for a project as large as Impulse. It’s fine to get your hands dirty building stuff from the ground up for a smaller project, but when you’re doing something this big, you need all the help you can get, and game engines like &lt;a href=&quot;https://unity3d.com/&quot;&gt;Unity&lt;/a&gt; or &lt;a href=&quot;https://phaser.io/&quot;&gt;Phaser&lt;/a&gt; perform a lot of common tasks for you. One other hidden benefit is they naturally help you organize your code, since there’s usually a ‘right’ way to plug into the engine or call its APIs.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;TLDR&lt;/strong&gt;: Research engines and frameworks when starting a project. You’ll thank yourself later.&lt;/p&gt;
+
+&lt;h3 id=&quot;converting-to-node-style-requires&quot;&gt;Converting to node-style requires&lt;/h3&gt;
+
+&lt;p&gt;I also decided to convert my code to use &lt;a href=&quot;https://github.com/substack/browserify-handbook#require&quot;&gt;node-style require syntax&lt;/a&gt;. Basically, this allowed me to specify what dependencies each of my files had, and also what methods in each file would be exposed to other files. &lt;/p&gt;
+
+&lt;p&gt;Benefits included:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Forced me to stomp out global variables&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Naturally improved organization of code&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Removed dependency graph issues&lt;/strong&gt; - I no longer had to worry about Javascript files loading out of order.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Access to node.js dev tools&lt;/strong&gt; - I was able to package Impulse up as a node.js package and use the many wonderful tools that the node.js community has developed. Some of the tools I’ve found particularly useful are:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;&lt;a href=&quot;http://browserify.org/&quot;&gt;Browserify&lt;/a&gt;&lt;/strong&gt; - automatically walks your dependency tree and compiles all your files into a single file. Previously, I had to explicitly list all my files.&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/mishoo/UglifyJS&quot;&gt;Uglify&lt;/a&gt;&lt;/strong&gt; - Javascript minification.&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;&lt;a href=&quot;http://gulpjs.com/&quot;&gt;Gulp&lt;/a&gt;&lt;/strong&gt; - allows you to create an automatic build pipeline by combining technologies like the two above.&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://lodash.com/docs&quot;&gt;Lodash&lt;/a&gt;&lt;/strong&gt; - a Javascript utilies library that makes for cleaner code. No more for-loops!&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;converting-to-the-pixi-rendering-engine&quot;&gt;Converting to the PIXI Rendering engine&lt;/h3&gt;
+
+&lt;p&gt;Finally, I decided to convert my game to use the &lt;a href=&quot;http://www.pixijs.com/&quot;&gt;PIXI&lt;/a&gt; Rendering Engine instead of making calls directly to the Canvas API. I was reaching the performance limit of Canvas, and there were a number of visual effects I still wanted to add. &lt;/p&gt;
+
+&lt;p&gt;Pros of PIXI:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Performance&lt;/strong&gt; - PIXI provides a 2D-optimized WebGL Renderer in addition to the standard 2D one. The API is the same for both, allowing for graceful fallback.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Sprites are first-class objects&lt;/strong&gt; - Instead of rotating the screen to draw a rotated sprite every frame, you can just modify the rotate attribute on a sprite object and everything else is taken care of.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Object-oriented style&lt;/strong&gt; - Allows for better code organization&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Cons of PIXI:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Conversion pains&lt;/strong&gt; - Canvas 2D is more imperative while PIXI is object-oriented. Re-architecting Impulse to handle PIXI is quite involved and time-consuming.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Graphics are not first-class objects&lt;/strong&gt; - I can’t save a Polygon object and pass it around or modify it. If I need a polygon to change every frame, I must make a Graphics object and re-draw to it every frame.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;It’s been a long refactoring journey, but the end is in sight. Next up, I’m going to start working on better visual cues and effects, with the benefits of a much cleaner code-base and a more powerful rendering engine.&lt;/p&gt;
+
+&lt;p&gt;I hope this provided you with some useful information, and I’ll be back with some juicier updates soon!&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 May 2015 20:45:00 -0400</pubDate>
+        <link>/blog/2015/05/04/code-quality-post-mortem.html</link>
+        <guid isPermaLink="true">/blog/2015/05/04/code-quality-post-mortem.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>The Story of our First Expo</title>

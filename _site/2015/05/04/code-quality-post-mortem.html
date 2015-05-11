@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Impulse Code Quality Post-Mortem</title>
+  <meta name="description" content="Code refactoring is about the least exciting thing you can do for two months when you’re trying to launch a game. Ain’t nobody got time for that, amirite?">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="/blog/2015/05/04/code-quality-post-mortem.html">
+  <link rel="alternate" type="application/rss+xml" title="Porcelain Games Blog" href="/blog/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">Porcelain Games Blog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Impulse Code Quality Post-Mortem</h1>
+    <p class="post-meta">May 4, 2015 • Mark Zhang</p>
+  </header>
+
+  <article class="post-content">
+    <p>Code refactoring is about the least exciting thing you can do for two months when you’re trying to launch a game. <em>Ain’t nobody got time for that, amirite?</em></p>
+
+<p>But Impulse’s three-year-old code base, which has gone through multiple design iterations, was seriously starting to offend my sensibilities.</p>
+
+<p>Thus, I spent the majority of March and April paying down my technical debt. I’ll go into what I did and what I learned.</p>
+
+<h3 id="brief-background">Brief Background</h3>
+
+<p>Impulse is a tough-as-nails top-down shooter crafted for hardcore players and written entirely in HTML5. Impulse is available online <a href="http://play-impulse.com">here</a>.</p>
+
+<p>I work on Impulse in my off-time with one other friend. I am employed full-time as a front-end web developer.</p>
+
+<h3 id="cleaning-up-the-code-base">Cleaning up the code base</h3>
+
+<p>Here’s what was wrong:</p>
+
+<ul>
+  <li><strong>Dead code everywhere</strong> - I have a bad habit of commenting out code instead of deleting it (even though I use version control!) if I’m not 100% sure about cutting a feature. 90% of the time I don’t look back and the commented code is left there.</li>
+  <li><strong>Confusing, multi-purpose modules</strong> - I have this class called MainGameSummaryState. Originally, it just showed end-of-level stats. But then I made it handle the UI when the player saved-and-quit the game. At the time, it was the easy thing to do, and besides, the two UIs were similar and both occurred when the player left the level. But the end result was a mess. There were multiple paths into MainGameSummaryState, each of which had to be configured with various flags. The internals were a tangle of if-statements.</li>
+  <li><strong>Poorly organized code</strong> - Let’s just leave it at that.</li>
+</ul>
+
+<p>Overall, I found myself asking ‘where does this happen in the code?’ and ‘what the hell does this even do?’ too many times. Surprisingly side-effects were also common. The time spent re-tracing through code and tracking down obscure bugs was substantial.</p>
+
+<p>Here’s what I did to fix it:</p>
+
+<ul>
+  <li><strong>Removed all the dead code</strong> - It’s still all preserved in version control. I tried to remove the code in steps and be descriptive with my commit messages so I could easily find deleted code in the future.</li>
+  <li><strong>Carefully split up my modules</strong> - My rule of thumb was that every module should do exactly one thing. If two modules share code, factor it out into a common library or common class. I made sure I could succinctly describe what was in each utility library (and I had many). I went from about 40 files to 110, but it felt much more manageable due to the organization.</li>
+  <li><strong>Organize related code into classes</strong> - For example, I created a class to hold the gameplay data and defined an API for game-states to modify it. As a result, all the logic for processing the gameplay data was in one place instead of scattered across game-states. In doing this, I discovered many ways to simplify the code and cut down on redundancies.</li>
+</ul>
+
+<h3 id="a-quick-word-on-game-engines">A quick word on game engines</h3>
+
+<p>I really regret not using a game engine for a project as large as Impulse. It’s fine to get your hands dirty building stuff from the ground up for a smaller project, but when you’re doing something this big, you need all the help you can get, and game engines like <a href="https://unity3d.com/">Unity</a> or <a href="https://phaser.io/">Phaser</a> perform a lot of common tasks for you. One other hidden benefit is they naturally help you organize your code, since there’s usually a ‘right’ way to plug into the engine or call its APIs.</p>
+
+<p><strong>TLDR</strong>: Research engines and frameworks when starting a project. You’ll thank yourself later.</p>
+
+<h3 id="converting-to-node-style-requires">Converting to node-style requires</h3>
+
+<p>I also decided to convert my code to use <a href="https://github.com/substack/browserify-handbook#require">node-style require syntax</a>. Basically, this allowed me to specify what dependencies each of my files had, and also what methods in each file would be exposed to other files. </p>
+
+<p>Benefits included:</p>
+
+<ul>
+  <li><strong>Forced me to stomp out global variables</strong></li>
+  <li><strong>Naturally improved organization of code</strong></li>
+  <li><strong>Removed dependency graph issues</strong> - I no longer had to worry about Javascript files loading out of order.</li>
+  <li><strong>Access to node.js dev tools</strong> - I was able to package Impulse up as a node.js package and use the many wonderful tools that the node.js community has developed. Some of the tools I’ve found particularly useful are:
+    <ul>
+      <li><strong><a href="http://browserify.org/">Browserify</a></strong> - automatically walks your dependency tree and compiles all your files into a single file. Previously, I had to explicitly list all my files.</li>
+      <li><strong><a href="https://github.com/mishoo/UglifyJS">Uglify</a></strong> - Javascript minification.</li>
+      <li><strong><a href="http://gulpjs.com/">Gulp</a></strong> - allows you to create an automatic build pipeline by combining technologies like the two above.</li>
+      <li><strong><a href="https://lodash.com/docs">Lodash</a></strong> - a Javascript utilies library that makes for cleaner code. No more for-loops!</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="converting-to-the-pixi-rendering-engine">Converting to the PIXI Rendering engine</h3>
+
+<p>Finally, I decided to convert my game to use the <a href="http://www.pixijs.com/">PIXI</a> Rendering Engine instead of making calls directly to the Canvas API. I was reaching the performance limit of Canvas, and there were a number of visual effects I still wanted to add. </p>
+
+<p>Pros of PIXI:</p>
+
+<ul>
+  <li><strong>Performance</strong> - PIXI provides a 2D-optimized WebGL Renderer in addition to the standard 2D one. The API is the same for both, allowing for graceful fallback.</li>
+  <li><strong>Sprites are first-class objects</strong> - Instead of rotating the screen to draw a rotated sprite every frame, you can just modify the rotate attribute on a sprite object and everything else is taken care of.</li>
+  <li><strong>Object-oriented style</strong> - Allows for better code organization</li>
+</ul>
+
+<p>Cons of PIXI:</p>
+
+<ul>
+  <li><strong>Conversion pains</strong> - Canvas 2D is more imperative while PIXI is object-oriented. Re-architecting Impulse to handle PIXI is quite involved and time-consuming.</li>
+  <li><strong>Graphics are not first-class objects</strong> - I can’t save a Polygon object and pass it around or modify it. If I need a polygon to change every frame, I must make a Graphics object and re-draw to it every frame.</li>
+</ul>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>It’s been a long refactoring journey, but the end is in sight. Next up, I’m going to start working on better visual cues and effects, with the benefits of a much cleaner code-base and a more powerful rendering engine.</p>
+
+<p>I hope this provided you with some useful information, and I’ll be back with some juicier updates soon!</p>
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li>Porcelain Games Blog</li>
+          <li><a href="mailto:porcelaingames@gmail.com">porcelaingames@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          <li>
+            <a href="https://twitter.com/markazhang">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">markazhang</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/burtonnichole">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">burtonnichole</span>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Porcelain Games is a small Boston-based duo that loves solving puzzles, breaking pots, and, of course, making games. Check out our debut game, <a href='http://play-impulse.com'>Impulse</a>
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
