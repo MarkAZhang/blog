@@ -1,6 +1,7 @@
 ---
 layout: post
-title: "How I Fixed Up My Broken 3 Year Old Code Base - An HTML5 Game Post-Mortem" 
+title: "How I Fixed Up My Crufty 3 Year Old Code Base"
+tagline: "An HTML5 Game Post-Mortem"
 date: 2015-05-04 20:45
 author: Mark Zhang
 ---
@@ -14,6 +15,11 @@ Thus, I spent the majority of March and April paying down my technical debt. I'l
 ### Brief Background
 
 Impulse is a tough-as-nails top-down shooter crafted for hardcore players and written entirely in HTML5. Impulse is available online [here](http://play-impulse.com).
+
+<div class="post-image-container">
+  <img src="{{ site.baseurl }}/assets/img/hive1_7.jpg" width="500"/>
+</div>
+
 
 I work on Impulse in my off-time with one other friend. I am employed full-time as a front-end web developer.
 

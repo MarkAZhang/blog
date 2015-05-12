@@ -6,12 +6,12 @@
 </description>
     <link>/blog/</link>
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 May 2015 23:57:53 -0400</pubDate>
-    <lastBuildDate>Mon, 11 May 2015 23:57:53 -0400</lastBuildDate>
+    <pubDate>Tue, 12 May 2015 11:00:43 -0400</pubDate>
+    <lastBuildDate>Tue, 12 May 2015 11:00:43 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
-        <title>How I Fixed Up My Broken 3 Year Old Code Base - An HTML5 Game Post-Mortem</title>
+        <title>How I Fixed Up My Crufty 3 Year Old Code Base</title>
         <description>&lt;p&gt;Code refactoring is about the least exciting thing you can do for two months when you’re trying to launch a game. &lt;em&gt;Ain’t nobody got time for that, amirite?&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;But Impulse’s three-year-old code base, which has gone through multiple design iterations, was seriously starting to offend my sensibilities.&lt;/p&gt;
@@ -21,6 +21,10 @@
 &lt;h3 id=&quot;brief-background&quot;&gt;Brief Background&lt;/h3&gt;
 
 &lt;p&gt;Impulse is a tough-as-nails top-down shooter crafted for hardcore players and written entirely in HTML5. Impulse is available online &lt;a href=&quot;http://play-impulse.com&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;post-image-container&quot;&gt;
+  &lt;img src=&quot;/blog/assets/img/hive1_7.jpg&quot; width=&quot;500&quot; /&gt;
+&lt;/div&gt;
 
 &lt;p&gt;I work on Impulse in my off-time with one other friend. I am employed full-time as a front-end web developer.&lt;/p&gt;
 
