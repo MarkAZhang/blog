@@ -6,12 +6,12 @@
 </description>
     <link>/blog/</link>
     <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 May 2015 01:02:22 -0400</pubDate>
-    <lastBuildDate>Mon, 11 May 2015 01:02:22 -0400</lastBuildDate>
+    <pubDate>Mon, 11 May 2015 23:57:53 -0400</pubDate>
+    <lastBuildDate>Mon, 11 May 2015 23:57:53 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
-        <title>Impulse Code Quality Post-Mortem</title>
+        <title>How I Fixed Up My Broken 3 Year Old Code Base - An HTML5 Game Post-Mortem</title>
         <description>&lt;p&gt;Code refactoring is about the least exciting thing you can do for two months when you’re trying to launch a game. &lt;em&gt;Ain’t nobody got time for that, amirite?&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;But Impulse’s three-year-old code base, which has gone through multiple design iterations, was seriously starting to offend my sensibilities.&lt;/p&gt;
@@ -29,19 +29,20 @@
 &lt;p&gt;Here’s what was wrong:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Dead code everywhere&lt;/strong&gt; - I have a bad habit of commenting out code instead of deleting it (even though I use version control!) if I’m not 100% sure about cutting a feature. 90% of the time I don’t look back and the commented code is left there.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Confusing, multi-purpose modules&lt;/strong&gt; - I have this class called MainGameSummaryState. Originally, it just showed end-of-level stats. But then I made it handle the UI when the player saved-and-quit the game. At the time, it was the easy thing to do, and besides, the two UIs were similar and both occurred when the player left the level. But the end result was a mess. There were multiple paths into MainGameSummaryState, each of which had to be configured with various flags. The internals were a tangle of if-statements.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Poorly organized code&lt;/strong&gt; - Let’s just leave it at that.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Dead code everywhere&lt;/strong&gt; - I have a bad habit of commenting out code instead of deleting it (even though I use version control!), especially if I’m not 100% sure about cutting a feature. 90% of the time I don’t look back but I forget to delete the commented code.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Confusing, multi-purpose modules&lt;/strong&gt; - I have this class called MainGameSummaryState. Originally, it just showed end-of-level stats. But then I made it handle the UI when the player saved-and-quit the game. At the time, it was the easy thing to do, and besides, the two UIs were similar and both occurred when the player left the level. But the end result was a mess. There were multiple paths into MainGameSummaryState, each of which had to be configured with various optional variables. The internals were a tangle of if-statements.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Poorly organized code&lt;/strong&gt; - Sometimes it’s obvious when you should bundle logic into a class–for example for each of Impulse’s enemy types. Sometimes it’s not. At first, the active game data for a play-through was so simple, a basic object seemed to suffice. But the complexity of the data grew and grew, and at each step, it seemed easier to keep adding logic to various game-states. The result was that the logic for the game data was spread out in an unintuitive way and very hard to recall about while developing.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Redundant code&lt;/strong&gt; - No matter how tempting it may be, never copy and paste logic from one file to another. Always take the time to factor it out. Otherwise, not only will your files get bogged down, but making changes will take longer because you have to change code in multiple places.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Overall, I found myself asking ‘where does this happen in the code?’ and ‘what the hell does this even do?’ too many times. Surprisingly side-effects were also common. The time spent re-tracing through code and tracking down obscure bugs was substantial.&lt;/p&gt;
+&lt;p&gt;Overall, I found myself asking ‘where does this happen in the code?’ and ‘what the hell does this even do?’ far too often. Unexpected side-effects were also common. The time spent re-tracing through code and tracking down obscure bugs was substantial and made working on the game less fun.&lt;/p&gt;
 
-&lt;p&gt;Here’s what I did to fix it:&lt;/p&gt;
+&lt;p&gt;Here’s what I did to improve my code quality:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Removed all the dead code&lt;/strong&gt; - It’s still all preserved in version control. I tried to remove the code in steps and be descriptive with my commit messages so I could easily find deleted code in the future.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Removed all the dead code&lt;/strong&gt; - It’s still all preserved in version control. I tried to remove the code in steps and be descriptive with my commit messages so I could easily find deleted code in the future. For code that I wanted to switch on and off (for example, an fps counter), I wrapped the code in a boolean flag.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Carefully split up my modules&lt;/strong&gt; - My rule of thumb was that every module should do exactly one thing. If two modules share code, factor it out into a common library or common class. I made sure I could succinctly describe what was in each utility library (and I had many). I went from about 40 files to 110, but it felt much more manageable due to the organization.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Organize related code into classes&lt;/strong&gt; - For example, I created a class to hold the gameplay data and defined an API for game-states to modify it. As a result, all the logic for processing the gameplay data was in one place instead of scattered across game-states. In doing this, I discovered many ways to simplify the code and cut down on redundancies.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Organize related code into classes&lt;/strong&gt; - For example, I created a class to hold the gameplay data and defined an API for game-states to modify it. As a result, all the logic for processing the gameplay data was in one place instead of scattered across game-states. In doing this, I also discovered many ways to simplify the code and cut down on redundancies.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;a-quick-word-on-game-engines&quot;&gt;A quick word on game engines&lt;/h3&gt;
@@ -78,20 +79,21 @@
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Performance&lt;/strong&gt; - PIXI provides a 2D-optimized WebGL Renderer in addition to the standard 2D one. The API is the same for both, allowing for graceful fallback.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Sprites are first-class objects&lt;/strong&gt; - Instead of rotating the screen to draw a rotated sprite every frame, you can just modify the rotate attribute on a sprite object and everything else is taken care of.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Sprites are first-class objects&lt;/strong&gt; - Instead of rotating the screen to draw a rotated sprite every frame, you can just modify the rotate attribute on a sprite object and everything else is taken care of. This makes the code much cleaner.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Object-oriented style&lt;/strong&gt; - Allows for better code organization&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Cons of PIXI:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Conversion pains&lt;/strong&gt; - Canvas 2D is more imperative while PIXI is object-oriented. Re-architecting Impulse to handle PIXI is quite involved and time-consuming.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Graphics are not first-class objects&lt;/strong&gt; - I can’t save a Polygon object and pass it around or modify it. If I need a polygon to change every frame, I must make a Graphics object and re-draw to it every frame.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Conversion pains&lt;/strong&gt; - Canvas 2D is more imperative while PIXI is object-oriented. Re-architecting Impulse to handle PIXI (i.e. re-writing ALL of my pre-existing rendering code) has been quite brain-draining and time-consuming.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Graphics are not first-class objects&lt;/strong&gt; - Unlike sprites, I can’t save a Polygon object and pass it around or modify it. If I need a polygon to change every frame, I must make a Graphics object and re-draw to it every frame.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;More variables&lt;/strong&gt; - I have to save a lot of objects with PIXI so that I can modify them later. This makes the code more verbose and sometimes less readable.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
 
-&lt;p&gt;It’s been a long refactoring journey, but the end is in sight. Next up, I’m going to start working on better visual cues and effects, with the benefits of a much cleaner code-base and a more powerful rendering engine.&lt;/p&gt;
+&lt;p&gt;It’s been a long refactoring journey, but the end is finally in sight. Next up, I’m going to start working on better visual cues and effects, with the benefits of a much cleaner code-base and a more powerful rendering engine.&lt;/p&gt;
 
 &lt;p&gt;I hope this provided you with some useful information, and I’ll be back with some juicier updates soon!&lt;/p&gt;
 </description>

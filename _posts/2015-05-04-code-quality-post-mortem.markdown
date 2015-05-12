@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Impulse Code Quality Post-Mortem"
+title: "How I Fixed Up My Broken 3 Year Old Code Base - An HTML5 Game Post-Mortem" 
 date: 2015-05-04 20:45
 author: Mark Zhang
 ---
@@ -21,17 +21,18 @@ I work on Impulse in my off-time with one other friend. I am employed full-time 
 
 Here's what was wrong:
 
-* **Dead code everywhere** - I have a bad habit of commenting out code instead of deleting it (even though I use version control!) if I'm not 100% sure about cutting a feature. 90% of the time I don't look back and the commented code is left there.
-* **Confusing, multi-purpose modules** - I have this class called MainGameSummaryState. Originally, it just showed end-of-level stats. But then I made it handle the UI when the player saved-and-quit the game. At the time, it was the easy thing to do, and besides, the two UIs were similar and both occurred when the player left the level. But the end result was a mess. There were multiple paths into MainGameSummaryState, each of which had to be configured with various flags. The internals were a tangle of if-statements.
-* **Poorly organized code** - Let's just leave it at that.
+* **Dead code everywhere** - I have a bad habit of commenting out code instead of deleting it (even though I use version control!), especially if I'm not 100% sure about cutting a feature. 90% of the time I don't look back but I forget to delete the commented code.
+* **Confusing, multi-purpose modules** - I have this class called MainGameSummaryState. Originally, it just showed end-of-level stats. But then I made it handle the UI when the player saved-and-quit the game. At the time, it was the easy thing to do, and besides, the two UIs were similar and both occurred when the player left the level. But the end result was a mess. There were multiple paths into MainGameSummaryState, each of which had to be configured with various optional variables. The internals were a tangle of if-statements.
+* **Poorly organized code** - Sometimes it's obvious when you should bundle logic into a class--for example for each of Impulse's enemy types. Sometimes it's not. At first, the active game data for a play-through was so simple, a basic object seemed to suffice. But the complexity of the data grew and grew, and at each step, it seemed easier to keep adding logic to various game-states. The result was that the logic for the game data was spread out in an unintuitive way and very hard to recall about while developing.
+* **Redundant code** - No matter how tempting it may be, never copy and paste logic from one file to another. Always take the time to factor it out. Otherwise, not only will your files get bogged down, but making changes will take longer because you have to change code in multiple places.
 
-Overall, I found myself asking 'where does this happen in the code?' and 'what the hell does this even do?' too many times. Surprisingly side-effects were also common. The time spent re-tracing through code and tracking down obscure bugs was substantial.
+Overall, I found myself asking 'where does this happen in the code?' and 'what the hell does this even do?' far too often. Unexpected side-effects were also common. The time spent re-tracing through code and tracking down obscure bugs was substantial and made working on the game less fun.
 
-Here's what I did to fix it:
+Here's what I did to improve my code quality:
 
-* **Removed all the dead code** - It's still all preserved in version control. I tried to remove the code in steps and be descriptive with my commit messages so I could easily find deleted code in the future.
+* **Removed all the dead code** - It's still all preserved in version control. I tried to remove the code in steps and be descriptive with my commit messages so I could easily find deleted code in the future. For code that I wanted to switch on and off (for example, an fps counter), I wrapped the code in a boolean flag.
 * **Carefully split up my modules** - My rule of thumb was that every module should do exactly one thing. If two modules share code, factor it out into a common library or common class. I made sure I could succinctly describe what was in each utility library (and I had many). I went from about 40 files to 110, but it felt much more manageable due to the organization.
-* **Organize related code into classes** - For example, I created a class to hold the gameplay data and defined an API for game-states to modify it. As a result, all the logic for processing the gameplay data was in one place instead of scattered across game-states. In doing this, I discovered many ways to simplify the code and cut down on redundancies.
+* **Organize related code into classes** - For example, I created a class to hold the gameplay data and defined an API for game-states to modify it. As a result, all the logic for processing the gameplay data was in one place instead of scattered across game-states. In doing this, I also discovered many ways to simplify the code and cut down on redundancies.
 
 
 ### A quick word on game engines
@@ -62,16 +63,17 @@ Finally, I decided to convert my game to use the [PIXI](http://www.pixijs.com/) 
 Pros of PIXI:
 
 * **Performance** - PIXI provides a 2D-optimized WebGL Renderer in addition to the standard 2D one. The API is the same for both, allowing for graceful fallback.
-* **Sprites are first-class objects** - Instead of rotating the screen to draw a rotated sprite every frame, you can just modify the rotate attribute on a sprite object and everything else is taken care of.
+* **Sprites are first-class objects** - Instead of rotating the screen to draw a rotated sprite every frame, you can just modify the rotate attribute on a sprite object and everything else is taken care of. This makes the code much cleaner.
 * **Object-oriented style** - Allows for better code organization
 
 Cons of PIXI:
 
-* **Conversion pains** - Canvas 2D is more imperative while PIXI is object-oriented. Re-architecting Impulse to handle PIXI is quite involved and time-consuming.
-* **Graphics are not first-class objects** - I can't save a Polygon object and pass it around or modify it. If I need a polygon to change every frame, I must make a Graphics object and re-draw to it every frame.
+* **Conversion pains** - Canvas 2D is more imperative while PIXI is object-oriented. Re-architecting Impulse to handle PIXI (i.e. re-writing ALL of my pre-existing rendering code) has been quite brain-draining and time-consuming.
+* **Graphics are not first-class objects** - Unlike sprites, I can't save a Polygon object and pass it around or modify it. If I need a polygon to change every frame, I must make a Graphics object and re-draw to it every frame.
+* **More variables** - I have to save a lot of objects with PIXI so that I can modify them later. This makes the code more verbose and sometimes less readable.
 
 ### Conclusion
 
-It's been a long refactoring journey, but the end is in sight. Next up, I'm going to start working on better visual cues and effects, with the benefits of a much cleaner code-base and a more powerful rendering engine.
+It's been a long refactoring journey, but the end is finally in sight. Next up, I'm going to start working on better visual cues and effects, with the benefits of a much cleaner code-base and a more powerful rendering engine.
 
 I hope this provided you with some useful information, and I'll be back with some juicier updates soon!
